@@ -10,6 +10,7 @@ package Token;
  * @author baquiax
  */
 public class Token {
+    
     private String token;
     private TipoToken tipo;
 
