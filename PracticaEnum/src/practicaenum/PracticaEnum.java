@@ -5,6 +5,8 @@
  */
 package practicaenum;
 
+import GUI.Ventana;
+
 /**
  *
  * @author baquiax
@@ -16,6 +18,7 @@ public class PracticaEnum {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        Ventana ventana = new Ventana();
     }
     
 }
