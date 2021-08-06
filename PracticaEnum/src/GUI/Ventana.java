@@ -5,20 +5,27 @@
  */
 package GUI;
 
+import AnalizadorLexico.AnalizadorLexico;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author baquiax
  */
 public class Ventana extends javax.swing.JFrame {
 
+    AnalizadorLexico analizador;
+
     /**
      * Creates new form Ventana
      */
     public Ventana() {
         initComponents();
+        analizador = new AnalizadorLexico();
+        iniciarTablero();
         super.setLocationRelativeTo(null);
         super.setResizable(false);
-        super.setVisible(true);  
+        super.setVisible(true);
     }
 
     /**
@@ -33,9 +40,9 @@ public class Ventana extends javax.swing.JFrame {
         lblTitulo = new javax.swing.JLabel();
         lblInstruccion = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        jtxtTexto = new javax.swing.JTextArea();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblResultados = new javax.swing.JTable();
         btnAnalizar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -48,11 +55,11 @@ public class Ventana extends javax.swing.JFrame {
         lblInstruccion.setFont(new java.awt.Font("Ubuntu", 3, 13)); // NOI18N
         lblInstruccion.setText("Ingrese el texto a analizar: ");
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        jtxtTexto.setColumns(20);
+        jtxtTexto.setRows(5);
+        jScrollPane1.setViewportView(jtxtTexto);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblResultados.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null}
             },
@@ -60,9 +67,14 @@ public class Ventana extends javax.swing.JFrame {
                 "Tipo", "Token"
             }
         ));
-        jScrollPane2.setViewportView(jTable1);
+        jScrollPane2.setViewportView(tblResultados);
 
         btnAnalizar.setText("Analizar");
+        btnAnalizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAnalizarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -99,13 +111,39 @@ public class Ventana extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnAnalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnalizarActionPerformed
+        // TODO add your handling code here:
+        analizador = new AnalizadorLexico();
+        String texto = jtxtTexto.getText();
+        analizador.analizarTexto(texto);
+        iniciarTablero();
+    }//GEN-LAST:event_btnAnalizarActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAnalizar;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JTextArea jtxtTexto;
     private javax.swing.JLabel lblInstruccion;
     private javax.swing.JLabel lblTitulo;
+    private javax.swing.JTable tblResultados;
     // End of variables declaration//GEN-END:variables
+
+    private void iniciarTablero() {
+        tblResultados.setModel(new DefaultTableModel(listarDatosJtable(), listarTituloJTable()));
+    }
+
+    public String[] listarTituloJTable() {
+        String[] nombreColumnas = {"Tipo", "Token"};
+        return nombreColumnas;
+    }
+
+    public String[][] listarDatosJtable() {
+        String[][] data = new String[analizador.getTokens().size()][2];
+        for (int i = 0; i < analizador.getTokens().size(); i++) {
+            data[i][0] = analizador.getTokens().get(i).getTipo().name();
+            data[i][1] = analizador.getTokens().get(i).getToken();
+        }
+        return data;
+    }
 }

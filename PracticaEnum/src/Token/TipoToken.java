@@ -11,5 +11,5 @@ package Token;
  * @author baquiax
  */
 public enum TipoToken {
-    ID, NUMERO_ENTERO, NUMERO_DECIMAL, SIMBOLOS,ERROR
+    ID, NUMERO_ENTERO, NUMERO_DECIMAL, SIMBOLO,ERROR
 }
